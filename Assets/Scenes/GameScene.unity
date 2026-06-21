@@ -24010,6 +24010,8 @@ MonoBehaviour:
   WorldStart: {x: 0, y: 0}
   WorldEnd: {x: 0, y: 0}
   Player: {fileID: 1315694200}
+  parentTextDamage: {fileID: 466464826}
+  prefabTextDamage: {fileID: 2805352011979595613, guid: d24cdf01e08514c7fadcbb26c0403afe, type: 3}
 --- !u!4 &1991092560
 Transform:
   m_ObjectHideFlags: 0

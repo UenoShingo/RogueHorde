@@ -13,6 +13,13 @@ public class PlayerController : MonoBehaviour
     // 後でInitへ移動
     [SerializeField] GameSceneDirector sceneDirector;
     [SerializeField] Slider sliderHP;
+    [SerializeField] Slider sliderXP;
+
+    public CharacterStats Stats;
+
+    // 攻撃のクールダウン
+    float attackCoolDownTimer;
+    float attackCoolDownTimerMax = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +31,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        updateTimer();
+
         movePlayer();
 
         moveCamera();
@@ -137,5 +146,80 @@ public class PlayerController : MonoBehaviour
         Vector3 pos = RectTransformUtility.WorldToScreenPoint(Camera.main, transform.position);
         pos.y -= 50;
         sliderHP.transform.position = pos;
+    }
+
+    // ダメージ
+    public void Damage(float attack)
+    {
+        // 非アクティブなら抜ける
+        if (!enabled) return;
+
+        float damage = Mathf.Max(0, attack - Stats.Defense);
+        Stats.HP -= damage;
+
+        // ダメージ表示
+        sceneDirector.DispDamage(gameObject, damage);
+
+        // TODO ゲームオーバー
+        if(0>Stats.HP)
+        {
+
+        }
+
+        if (0 > Stats.HP) Stats.HP = 0;
+        setSliderHP();
+    }
+
+    // HPスライダーの値を更新
+    void setSliderHP()
+    {
+        sliderHP.maxValue = Stats.MaxHP;
+        sliderHP.value = Stats.HP;
+    }
+
+    // XPスライダーの値を更新
+    void setSliderXP()
+    {
+        sliderXP.maxValue = Stats.MaxXP;
+        sliderXP.value = Stats.XP;
+    }
+
+    // 衝突した時
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        attackEnemy(collision);
+    }
+
+    // 衝突している間
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        attackEnemy(collision);
+    }
+
+    // 衝突が終わった時
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+
+    }
+
+    // プレイヤーへ攻撃する
+    void attackEnemy(Collision2D collision)
+    {
+        // エネミー以外
+        if (!collision.gameObject.TryGetComponent<EnemyController>(out var enemy)) return;
+        // タイマー未消化
+        if (0 < attackCoolDownTimer) return;
+
+        enemy.Damage(Stats.Attack);
+        attackCoolDownTimer = attackCoolDownTimerMax;
+    }
+
+    // 各種タイマー更新
+    void updateTimer()
+    {
+        if (0 < attackCoolDownTimer)
+        {
+            attackCoolDownTimer -= Time.deltaTime;
+        }
     }
 }
