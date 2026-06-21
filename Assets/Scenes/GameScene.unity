@@ -24012,6 +24012,9 @@ MonoBehaviour:
   Player: {fileID: 1315694200}
   parentTextDamage: {fileID: 466464826}
   prefabTextDamage: {fileID: 2805352011979595613, guid: d24cdf01e08514c7fadcbb26c0403afe, type: 3}
+  textTimer: {fileID: 112153727}
+  GameTimer: 0
+  OldSeconds: 0
 --- !u!4 &1991092560
 Transform:
   m_ObjectHideFlags: 0
