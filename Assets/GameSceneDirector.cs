@@ -16,6 +16,9 @@ public class GameSceneDirector : MonoBehaviour
 
     public PlayerController Player;
 
+    [SerializeField] Transform parentTextDamage;
+    [SerializeField] GameObject prefabTextDamage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,5 +58,12 @@ public class GameSceneDirector : MonoBehaviour
     void Update()
     {
         
+    }
+
+    // ダメージ表示
+    public void DispDamage(GameObject target, float damage)
+    {
+        GameObject obj = Instantiate(prefabTextDamage, parentTextDamage);
+        obj.GetComponent<TextDamageController>().Init(target, damage);
     }
 }
