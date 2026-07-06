@@ -6914,7 +6914,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &203739204
 MonoBehaviour:
@@ -14024,82 +14024,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298015355}
   m_CullTransparentMesh: 1
---- !u!1001 &1315694199
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3340308664222665277, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: sliderHP
-      value: 
-      objectReference: {fileID: 163506587}
-    - target: {fileID: 3340308664222665277, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: sceneDirector
-      value: 
-      objectReference: {fileID: 1991092559}
-    - target: {fileID: 4374597268892085943, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_Name
-      value: Knight
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374597268892085946, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
---- !u!114 &1315694200 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3340308664222665277, guid: 8c1eba44a6c9c420393aae25b9bcd46e, type: 3}
-  m_PrefabInstance: {fileID: 1315694199}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 269f8fd307c794f46a2479ee25f358e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1319842541
 GameObject:
   m_ObjectHideFlags: 0
@@ -23468,13 +23392,16 @@ MonoBehaviour:
   TileMapEnd: {x: 0, y: 0}
   WorldStart: {x: 0, y: 0}
   WorldEnd: {x: 0, y: 0}
-  Player: {fileID: 1315694200}
+  Player: {fileID: 0}
   parentTextDamage: {fileID: 466464826}
   prefabTextDamage: {fileID: 2805352011979595613, guid: d24cdf01e08514c7fadcbb26c0403afe, type: 3}
   textTimer: {fileID: 112153727}
   GameTimer: 0
   OldSeconds: 0
   enemySpawner: {fileID: 203739204}
+  sliderXP: {fileID: 365722628}
+  sliderHP: {fileID: 163506587}
+  textLv: {fileID: 1128223079}
 --- !u!4 &1991092560
 Transform:
   m_ObjectHideFlags: 0
@@ -23488,7 +23415,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2006286723
 GameObject:
