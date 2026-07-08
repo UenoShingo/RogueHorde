@@ -27,7 +27,7 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -127,7 +127,8 @@ public class EnemyController : MonoBehaviour
         // 経験値を作成
         if (createXP)
         {
-            // TODO 経験値生成
+            // 経験値生成
+            sceneDirector.CreateXP(this);
         }
 
         state = State.Dead;
@@ -178,7 +179,7 @@ public class EnemyController : MonoBehaviour
         sceneDirector.DispDamage(gameObject, damage);
 
         // TODO 消滅
-        if(0>Stats.HP)
+        if (0 > Stats.HP)
         {
             setDead();
         }

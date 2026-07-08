@@ -23402,6 +23402,10 @@ MonoBehaviour:
   sliderXP: {fileID: 365722628}
   sliderHP: {fileID: 163506587}
   textLv: {fileID: 1128223079}
+  prefabXP:
+  - {fileID: 7884054841386906290, guid: 8f6aaf77e5dcc4c659d380d3ea493b4f, type: 3}
+  - {fileID: 8429082674353169220, guid: 5c2326be74d16436a8e9c0d5a5403de6, type: 3}
+  - {fileID: 409988772604676447, guid: 373f058cfa69c4dd9b6aff3d6330bb7e, type: 3}
 --- !u!4 &1991092560
 Transform:
   m_ObjectHideFlags: 0
