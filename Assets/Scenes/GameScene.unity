@@ -4869,6 +4869,7 @@ GameObject:
   - component: {fileID: 172705489}
   - component: {fileID: 172705491}
   - component: {fileID: 172705490}
+  - component: {fileID: 172705492}
   m_Layer: 5
   m_Name: PanelLevelUp
   m_TagString: Untagged
@@ -4940,6 +4941,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172705488}
   m_CullTransparentMesh: 1
+--- !u!114 &172705492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172705488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8e3021e4955422295ca5457ece546b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ButtonLevelUps:
+  - {fileID: 1973606199}
+  - {fileID: 10744150}
+  - {fileID: 44313291}
+  - {fileID: 1209708880}
+  buttonCancel: {fileID: 713553763}
 --- !u!1 &178456284
 GameObject:
   m_ObjectHideFlags: 0
@@ -8098,7 +8117,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 713553764}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 172705492}
+        m_TargetAssemblyTypeName: PanelLevelUpController, Assembly-CSharp
+        m_MethodName: OnClickCancel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &713553764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23406,6 +23437,7 @@ MonoBehaviour:
   - {fileID: 7884054841386906290, guid: 8f6aaf77e5dcc4c659d380d3ea493b4f, type: 3}
   - {fileID: 8429082674353169220, guid: 5c2326be74d16436a8e9c0d5a5403de6, type: 3}
   - {fileID: 409988772604676447, guid: 373f058cfa69c4dd9b6aff3d6330bb7e, type: 3}
+  panelLevelUp: {fileID: 172705492}
 --- !u!4 &1991092560
 Transform:
   m_ObjectHideFlags: 0
