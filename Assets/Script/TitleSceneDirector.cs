@@ -62,6 +62,9 @@ public class TitleSceneDirector : MonoBehaviour
                 SceneManager.LoadScene("GameScene");
             });
         }
+
+        // ボタンを選択状態にする
+        buttonStart.Select();
     }
 
     // Update is called once per frame
@@ -87,5 +90,8 @@ public class TitleSceneDirector : MonoBehaviour
 
             Utils.DOfadeUpdate(item, 1, 1, 0);
         }
+
+        // ボタンを選択状態にする
+        buttonPlayers[0].Select();
     }
 }

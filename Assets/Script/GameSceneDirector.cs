@@ -65,6 +65,9 @@ public class GameSceneDirector : MonoBehaviour
     // ゲームオーバー
     [SerializeField] PanelGameOverController panelGameOver;
 
+    // 終了時間
+    [SerializeField] float GameOverTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -134,8 +137,15 @@ public class GameSceneDirector : MonoBehaviour
     {
         // ゲームタイマー更新
         updateGameTimer();
+
         // 宝箱生成
         updateTreasureChestSpawner();
+
+        // 秒数経過でゲームオーバー
+        if (GameOverTime < GameTimer)
+        {
+            DispPanelGameOver();
+        }
     }
 
     // ダメージ表示
