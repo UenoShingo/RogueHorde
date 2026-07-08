@@ -456,7 +456,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 58265977}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1682788836}
+        m_TargetAssemblyTypeName: PanelTreasureChestController, Assembly-CSharp
+        m_MethodName: OnClickOpen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &58265977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14218,7 +14230,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1332326232}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1682788836}
+        m_TargetAssemblyTypeName: PanelTreasureChestController, Assembly-CSharp
+        m_MethodName: OnClickClose
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1332326232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20934,6 +20958,7 @@ GameObject:
   - component: {fileID: 1682788833}
   - component: {fileID: 1682788835}
   - component: {fileID: 1682788834}
+  - component: {fileID: 1682788836}
   m_Layer: 5
   m_Name: PanelTreasureChest
   m_TagString: Untagged
@@ -21007,6 +21032,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682788832}
   m_CullTransparentMesh: 1
+--- !u!114 &1682788836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682788832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a0f6493a53948e7b7cf1b78bac4b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imageClose: {fileID: 597733620}
+  imageOpen: {fileID: 1173484429}
+  imageItem: {fileID: 1930601661}
+  imageBackFX: {fileID: 576193920}
+  imageBackFXShiny: {fileID: 2112788487}
+  buttonOpen: {fileID: 58265976}
+  buttonClose: {fileID: 1332326231}
+  textDescription: {fileID: 852935411}
 --- !u!1 &1699304831
 GameObject:
   m_ObjectHideFlags: 0
@@ -23438,6 +23483,11 @@ MonoBehaviour:
   - {fileID: 8429082674353169220, guid: 5c2326be74d16436a8e9c0d5a5403de6, type: 3}
   - {fileID: 409988772604676447, guid: 373f058cfa69c4dd9b6aff3d6330bb7e, type: 3}
   panelLevelUp: {fileID: 172705492}
+  panelTreasureChest: {fileID: 1682788836}
+  prefabTreasureChest: {fileID: 2815160584621684194, guid: fa8dc66902a7f44408608e810b5f91fe, type: 3}
+  treasureChestItemIds: 03000000040000000500000006000000
+  treasureChestTimerMin: 1
+  treasureChestTimerMax: 5
 --- !u!4 &1991092560
 Transform:
   m_ObjectHideFlags: 0

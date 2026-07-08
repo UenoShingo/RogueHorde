@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 // ゲームで使う共通処理をまとめた便利クラス
 public static class Utils
@@ -27,5 +28,27 @@ public static class Utils
         }
 
         return false;
+    }
+
+    // アルファ値設定
+    public static void SetAlpha(Graphic graphic, float alpha)
+    {
+        // 元のカラー
+        Color color = graphic.color;
+        // アルファ値設定
+        color.a = alpha;
+        graphic.color = color;
+    }
+
+    // アルファ値設定（ボタン）
+    public static void SetAlpha(Button button, float alpha)
+    {
+        // ボタン自体
+        SetAlpha(button.image, alpha);
+        // 子オブジェクト全て
+        foreach (var item in button.GetComponentsInChildren<Graphic>())
+        {
+            SetAlpha(item, alpha);
+        }
     }
 }
