@@ -32,6 +32,25 @@ MonoBehaviour:
     UsableWeaponIds: 000000000100000002000000030000000400000005000000060000000700000008000000
     UsableWeaponMax: 6
     MoveType: 0
+  - Title: "\u30A2\u30FC\u30C1\u30E3\u30FC"
+    Id: 1
+    Lv: 1
+    Name: "\u30A2\u30FC\u30C1\u30E3\u30FC"
+    Description: 
+    Attack: 1
+    Defense: 0.1
+    HP: 50
+    MaxHP: 50
+    XP: 0
+    MaxXP: 10
+    MoveSpeed: 3
+    PickUpRange: 0.5
+    AliveTime: -1
+    Prefab: {fileID: 146954174213960401, guid: 79642700892954b0ba0f72a561ca9e54, type: 3}
+    DefaultWeaponIds: 02000000
+    UsableWeaponIds: 0100000002000000030000000400000005000000060000000700000008000000
+    UsableWeaponMax: 5
+    MoveType: 0
   - Title: "\u30B3\u30A6\u30E2\u30EA"
     Id: 100
     Lv: 0
