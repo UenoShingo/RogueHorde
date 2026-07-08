@@ -65,6 +65,9 @@ public class TitleSceneDirector : MonoBehaviour
 
         // ボタンを選択状態にする
         buttonStart.Select();
+
+        // タイトルBGM
+        SoundController.Instance.PlayBGM(1);
     }
 
     // Update is called once per frame
@@ -93,5 +96,7 @@ public class TitleSceneDirector : MonoBehaviour
 
         // ボタンを選択状態にする
         buttonPlayers[0].Select();
+
+        SoundController.Instance.PlaySE(0);
     }
 }
