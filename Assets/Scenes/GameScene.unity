@@ -23490,6 +23490,8 @@ MonoBehaviour:
   treasureChestTimerMax: 5
   canvas: {fileID: 1522083330}
   prefabImagePlayerIcon: {fileID: 2124883879947941682, guid: e48804b99bd6c4f8cad4a52ffe31dace, type: 3}
+  textDefeatedEnemy: {fileID: 1086843770}
+  DefeatedEnemyCount: 0
 --- !u!4 &1991092560
 Transform:
   m_ObjectHideFlags: 0

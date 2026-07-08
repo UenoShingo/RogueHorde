@@ -56,6 +56,10 @@ public class GameSceneDirector : MonoBehaviour
     const int PlayerIconStartX = 20;
     const int PlayerIconStartY = -40;
 
+    // 倒した敵のカウント
+    [SerializeField] Text textDefeatedEnemy;
+    public int DefeatedEnemyCount;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -107,9 +111,13 @@ public class GameSceneDirector : MonoBehaviour
 
         // 初期値
         treasureChestTimer = Random.Range(treasureChestTimerMin, treasureChestTimerMax);
+        DefeatedEnemyCount = -1;
 
         // アイコン更新
         dispPlayerIcon();
+
+        // 倒した敵更新
+        AddDefeatedEnemy();
 
         // TimeScaleリセット
         setEnabled();
@@ -346,5 +354,12 @@ public class GameSceneDirector : MonoBehaviour
             // 次の位置
             x += w;
         }
+    }
+
+    // 倒した敵をカウント
+    public void AddDefeatedEnemy()
+    {
+        DefeatedEnemyCount++;
+        textDefeatedEnemy.text = "" + DefeatedEnemyCount;
     }
 }

@@ -6,14 +6,6 @@ public class TreasureChestController : MonoBehaviour
 {
     GameSceneDirector sceneDirector;
 
-    void Awake()
-    {
-        if (null == sceneDirector)
-        {
-            sceneDirector = FindObjectOfType<GameSceneDirector>();
-        }
-    }
-
     // 初期化
     public void Init(GameSceneDirector sceneDirector)
     {
@@ -25,13 +17,8 @@ public class TreasureChestController : MonoBehaviour
         // プレイヤーじゃない
         if (!collision.gameObject.TryGetComponent<PlayerController>(out var player)) return;
 
-        if (null == sceneDirector)
-        {
-            Debug.LogWarning("GameSceneDirector is not set.", this);
-            return;
-        }
-
         sceneDirector.DispPanelTreasureChest();
         Destroy(gameObject);
     }
 }
+
