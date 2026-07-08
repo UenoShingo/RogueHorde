@@ -4852,7 +4852,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14642,6 +14642,7 @@ GameObject:
   - component: {fileID: 1578317340}
   - component: {fileID: 1578317342}
   - component: {fileID: 1578317341}
+  - component: {fileID: 1578317343}
   m_Layer: 5
   m_Name: PanelGameOver
   m_TagString: Untagged
@@ -14719,6 +14720,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1578317339}
   m_CullTransparentMesh: 1
+--- !u!114 &1578317343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578317339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7687baa05820040ffa4acfea28430480, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelGameOverBG: {fileID: 170873220}
+  textSurvivedResult: {fileID: 432114266}
+  textLevelResult: {fileID: 1248491743}
+  textEnemyResult: {fileID: 959275575}
+  textWeaponNameTitle: {fileID: 1744688791}
+  textWeaponLevelTitle: {fileID: 1319842543}
+  textWeaponDamageTitle: {fileID: 394680898}
+  textWeaponTimeTitle: {fileID: 2118706465}
+  textWeaponDPSTitle: {fileID: 955863545}
+  buttonDone: {fileID: 1033838577}
 --- !u!1 &1583577418
 GameObject:
   m_ObjectHideFlags: 0
@@ -23492,6 +23515,7 @@ MonoBehaviour:
   prefabImagePlayerIcon: {fileID: 2124883879947941682, guid: e48804b99bd6c4f8cad4a52ffe31dace, type: 3}
   textDefeatedEnemy: {fileID: 1086843770}
   DefeatedEnemyCount: 0
+  panelGameOver: {fileID: 1578317343}
 --- !u!4 &1991092560
 Transform:
   m_ObjectHideFlags: 0

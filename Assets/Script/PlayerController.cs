@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -241,10 +242,18 @@ public class PlayerController : MonoBehaviour
         // ダメージ表示
         sceneDirector.DispDamage(gameObject, damage);
 
-        // TODO ゲームオーバー
+        // ゲームオーバー
         if (0 > Stats.HP)
         {
+            // 操作できないようにする
+            SetEnabled(false);
 
+            // アニメーション
+            transform.DOScale(new Vector2(5, 0), 2).SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    sceneDirector.DispPanelGameOver();
+                });
         }
 
         if (0 > Stats.HP) Stats.HP = 0;
