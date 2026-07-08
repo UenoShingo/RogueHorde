@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -124,33 +125,7 @@ public class PlayerController : MonoBehaviour
     void movePlayer()
     {
         // 移動する方向
-        Vector2 dir = Vector2.zero;
-        // 再生するアニメーション
-        string trigger = "";
-
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            dir += Vector2.up;
-            trigger = "isUp";
-        }
-
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            dir -= Vector2.up;
-            trigger = "isDown";
-        }
-
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            dir += Vector2.right;
-            trigger = "isRight";
-        }
-
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            dir -= Vector2.right;
-            trigger = "isLeft";
-        }
+        Vector2 dir = getMoveInput();
 
         // 入力がなければ抜ける
         if (Vector2.zero == dir) return;
@@ -159,7 +134,7 @@ public class PlayerController : MonoBehaviour
         rigidbody2d.position += dir.normalized * Stats.MoveSpeed * Time.deltaTime;
 
         // アニメーションを再生する
-        animator.SetTrigger(trigger);
+        animator.SetTrigger(getMoveTrigger(dir));
 
         // 移動範囲制御
         // 始点
@@ -190,6 +165,57 @@ public class PlayerController : MonoBehaviour
         }
 
         Forward = dir;
+    }
+
+    // 移動入力
+    Vector2 getMoveInput()
+    {
+        Vector2 dir = Vector2.zero;
+
+        Keyboard keyboard = Keyboard.current;
+        if (null != keyboard)
+        {
+            if (keyboard.upArrowKey.isPressed || keyboard.wKey.isPressed)
+            {
+                dir += Vector2.up;
+            }
+            if (keyboard.downArrowKey.isPressed || keyboard.sKey.isPressed)
+            {
+                dir -= Vector2.up;
+            }
+            if (keyboard.rightArrowKey.isPressed || keyboard.dKey.isPressed)
+            {
+                dir += Vector2.right;
+            }
+            if (keyboard.leftArrowKey.isPressed || keyboard.aKey.isPressed)
+            {
+                dir -= Vector2.right;
+            }
+        }
+
+        Gamepad gamepad = Gamepad.current;
+        if (null != gamepad)
+        {
+            Vector2 gamepadDir = gamepad.leftStick.ReadValue();
+            if (0.1f > gamepadDir.sqrMagnitude)
+            {
+                gamepadDir = gamepad.dpad.ReadValue();
+            }
+            dir += gamepadDir;
+        }
+
+        return Vector2.ClampMagnitude(dir, 1);
+    }
+
+    // 移動方向に対応するアニメーション
+    string getMoveTrigger(Vector2 dir)
+    {
+        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+        {
+            return (0 < dir.x) ? "isRight" : "isLeft";
+        }
+
+        return (0 < dir.y) ? "isUp" : "isDown";
     }
 
     // カメラ移動

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -73,7 +74,10 @@ public class TitleSceneDirector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (canSubmitStart() && isSubmitPressed())
+        {
+            OnClickStart();
+        }
     }
 
     // Startボタン
@@ -98,5 +102,29 @@ public class TitleSceneDirector : MonoBehaviour
         buttonPlayers[0].Select();
 
         SoundController.Instance.PlaySE(0);
+    }
+
+    bool canSubmitStart()
+    {
+        return buttonStart.gameObject.activeInHierarchy && buttonStart.interactable;
+    }
+
+    bool isSubmitPressed()
+    {
+        Keyboard keyboard = Keyboard.current;
+        if (null != keyboard)
+        {
+            if (keyboard.enterKey.wasPressedThisFrame
+                || keyboard.numpadEnterKey.wasPressedThisFrame
+                || keyboard.spaceKey.wasPressedThisFrame)
+            {
+                return true;
+            }
+        }
+
+        Gamepad gamepad = Gamepad.current;
+        return null != gamepad
+            && (gamepad.buttonSouth.wasPressedThisFrame
+                || gamepad.startButton.wasPressedThisFrame);
     }
 }
