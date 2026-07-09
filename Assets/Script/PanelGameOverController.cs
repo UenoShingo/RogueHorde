@@ -8,6 +8,9 @@ public class PanelGameOverController : MonoBehaviour
 {
     // 背景
     [SerializeField] Image panelGameOverBG;
+    [SerializeField] Text textResultTitle;
+    [SerializeField] string gameOverTitle = "GAME OVER";
+    [SerializeField] string gameClearTitle = "GAME CLEAR";
     // 生存時間、レベル、倒した敵
     [SerializeField] Text textSurvivedResult;
     [SerializeField] Text textLevelResult;
@@ -61,8 +64,13 @@ public class PanelGameOverController : MonoBehaviour
     }
 
     // パネル表示
-    public void DispPanel(List<BaseWeaponSpawner> weaponSpawners)
+    public void DispPanel(List<BaseWeaponSpawner> weaponSpawners, bool isGameClear = false)
     {
+        if (null != textResultTitle)
+        {
+            textResultTitle.text = isGameClear ? gameClearTitle : gameOverTitle;
+        }
+
         // 生存時間
         textSurvivedResult.text = Utils.GetTextTimer(sceneDirector.GameTimer);
         // レベル

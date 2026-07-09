@@ -1046,6 +1046,7 @@ MonoBehaviour:
   - {fileID: 1267941597}
   - {fileID: 1586652766}
   characterIds: 0000000001000000
+  gameSceneLoadDelay: 0.15
 --- !u!1 &1479128481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,6 +1523,11 @@ MonoBehaviour:
   audioClipsBGM:
   - {fileID: 8300000, guid: 15385ff64cd60fc4dbf54ad547a7fd3c, type: 3}
   - {fileID: 8300000, guid: 6c8567eb4554618499733cab5e559ef4, type: 3}
+  audioClipGameOverBGM: {fileID: 8300000, guid: b69836e4968d8d64d80e1619f4c9a308, type: 3}
+  audioClipGameClearBGM: {fileID: 8300000, guid: 4de1671609d8ce842b338da54b8922bf, type: 3}
+  gameOverBGMIndex: 2
+  gameClearBGMIndex: 3
+  titleBGMIndex: 1
   audioClipsSE:
   - {fileID: 8300000, guid: 94da957ac7a943b44b60b1a0028c0c26, type: 3}
   - {fileID: 8300000, guid: cbe9f63b43f5e466db2242a8b8f7f6ce, type: 3}

@@ -11,6 +11,7 @@ public class SoundController : MonoBehaviour
     float lastUISelectSETime = -999f;
     float lastEnemyDamageSETime = -999f;
     float lastPlayerDamageSETime = -999f;
+    Coroutine bgmCoroutine;
 
     void Awake()
     {
@@ -36,6 +37,11 @@ public class SoundController : MonoBehaviour
     AudioSource audioSource;
     // BGM音源
     [SerializeField] List<AudioClip> audioClipsBGM;
+    [SerializeField] AudioClip audioClipGameOverBGM;
+    [SerializeField] AudioClip audioClipGameClearBGM;
+    [SerializeField] int gameOverBGMIndex = 2;
+    [SerializeField] int gameClearBGMIndex = 3;
+    [SerializeField] int titleBGMIndex = 1;
     // SE音源
     [SerializeField] List<AudioClip> audioClipsSE;
     // UI選択専用SE音源
@@ -50,13 +56,79 @@ public class SoundController : MonoBehaviour
     // BGM再生
     public void PlayBGM(int index)
     {
-        if (null == audioSource) return;
-        if (null == audioClipsBGM) return;
-        if (0 > index || audioClipsBGM.Count <= index) return;
-        if (null == audioClipsBGM[index]) return;
+        PlayBGM(getBGMClip(index));
+    }
 
-        audioSource.clip = audioClipsBGM[index];
+    // BGM再生
+    public void PlayBGM(AudioClip clip)
+    {
+        if (null == audioSource) return;
+        if (null == clip) return;
+
+        stopBGMCoroutine();
+        audioSource.loop = true;
+        audioSource.clip = clip;
         audioSource.Play();
+    }
+
+    // ゲームオーバーBGM再生
+    public void PlayGameOverBGM()
+    {
+        playResultBGM(audioClipGameOverBGM, gameOverBGMIndex);
+    }
+
+    // ゲームクリアBGM再生
+    public void PlayGameClearBGM()
+    {
+        playResultBGM(audioClipGameClearBGM, gameClearBGMIndex);
+    }
+
+    void playResultBGM(AudioClip clip, int fallbackIndex)
+    {
+        if (null == audioSource) return;
+
+        AudioClip resultClip = clip;
+        if (null == resultClip)
+        {
+            resultClip = getBGMClip(fallbackIndex);
+        }
+
+        if (null == resultClip)
+        {
+            PlayBGM(titleBGMIndex);
+            return;
+        }
+
+        stopBGMCoroutine();
+        bgmCoroutine = StartCoroutine(playResultBGMThenTitle(resultClip));
+    }
+
+    IEnumerator playResultBGMThenTitle(AudioClip resultClip)
+    {
+        audioSource.loop = false;
+        audioSource.clip = resultClip;
+        audioSource.Play();
+
+        yield return new WaitForSecondsRealtime(resultClip.length);
+
+        bgmCoroutine = null;
+        PlayBGM(titleBGMIndex);
+    }
+
+    AudioClip getBGMClip(int index)
+    {
+        if (null == audioClipsBGM) return null;
+        if (0 > index || audioClipsBGM.Count <= index) return null;
+
+        return audioClipsBGM[index];
+    }
+
+    void stopBGMCoroutine()
+    {
+        if (null == bgmCoroutine) return;
+
+        StopCoroutine(bgmCoroutine);
+        bgmCoroutine = null;
     }
 
     // SE再生

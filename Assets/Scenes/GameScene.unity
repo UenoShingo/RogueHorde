@@ -14824,6 +14824,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelGameOverBG: {fileID: 170873220}
+  textResultTitle: {fileID: 1643131063}
+  gameOverTitle: GAME OVER
+  gameClearTitle: GAME CLEAR
   textSurvivedResult: {fileID: 432114266}
   textLevelResult: {fileID: 1248491743}
   textEnemyResult: {fileID: 959275575}

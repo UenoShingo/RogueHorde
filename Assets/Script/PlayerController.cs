@@ -283,6 +283,8 @@ public class PlayerController : MonoBehaviour
         // ゲームオーバー
         if (0 > Stats.HP)
         {
+            sceneDirector.ReserveGameOver();
+
             // 操作できないようにする
             SetEnabled(false);
 

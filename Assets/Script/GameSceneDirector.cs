@@ -70,6 +70,8 @@ public class GameSceneDirector : MonoBehaviour
 
     // 終了時間
     [SerializeField] float GameOverTime;
+    bool isResultDisplayed;
+    bool isGameOverReserved;
 
     // Start is called before the first frame update
     void Start()
@@ -137,7 +139,10 @@ public class GameSceneDirector : MonoBehaviour
         // TimeScaleリセット
         setEnabled();
 
-        SoundController.Instance.PlayBGM(0);
+        if (null != SoundController.Instance)
+        {
+            SoundController.Instance.PlayBGM(0);
+        }
     }
 
     // Update is called once per frame
@@ -149,10 +154,10 @@ public class GameSceneDirector : MonoBehaviour
         // 宝箱生成
         updateTreasureChestSpawner();
 
-        // 秒数経過でゲームオーバー
-        if (GameOverTime < GameTimer)
+        // 秒数経過でゲームクリア
+        if (!isGameOverReserved && GameOverTime < GameTimer)
         {
-            DispPanelGameOver();
+            DispPanelGameClear();
         }
     }
 
@@ -436,8 +441,45 @@ public class GameSceneDirector : MonoBehaviour
     // ゲームオーバーパネルを表示
     public void DispPanelGameOver()
     {
+        dispPanelResult(false);
+    }
+
+    // ゲームオーバー予約
+    public void ReserveGameOver()
+    {
+        isGameOverReserved = true;
+    }
+
+    // ゲームクリアパネルを表示
+    public void DispPanelGameClear()
+    {
+        dispPanelResult(true);
+    }
+
+    void dispPanelResult(bool isGameClear)
+    {
+        if (isResultDisplayed) return;
+        isResultDisplayed = true;
+
+        if (!isGameClear)
+        {
+            isGameOverReserved = true;
+        }
+
+        if (null != SoundController.Instance)
+        {
+            if (isGameClear)
+            {
+                SoundController.Instance.PlayGameClearBGM();
+            }
+            else
+            {
+                SoundController.Instance.PlayGameOverBGM();
+            }
+        }
+
         // パネル表示
-        panelGameOver.DispPanel(Player.WeaponSpawners);
+        panelGameOver.DispPanel(Player.WeaponSpawners, isGameClear);
         // ゲーム中断
         setEnabled(false);
     }
