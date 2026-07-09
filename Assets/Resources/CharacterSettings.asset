@@ -203,6 +203,7 @@ MonoBehaviour:
     UsableWeaponIds: 
     UsableWeaponMax: 0
     MoveType: 0
+    TreasureChestDropRate: 1
   - Title: "\u30DC\u30B9"
     Id: 500
     Lv: 1
@@ -222,3 +223,4 @@ MonoBehaviour:
     UsableWeaponIds: 
     UsableWeaponMax: 0
     MoveType: 0
+    TreasureChestDropRate: 1

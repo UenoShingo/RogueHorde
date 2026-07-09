@@ -129,9 +129,19 @@ public class EnemyController : MonoBehaviour
         {
             // 経験値生成
             sceneDirector.CreateXP(this);
+            dropTreasureChest();
         }
 
         state = State.Dead;
+    }
+
+    void dropTreasureChest()
+    {
+        if (null == sceneDirector) return;
+        if (0 >= Stats.TreasureChestDropRate) return;
+        if (Random.value > Stats.TreasureChestDropRate) return;
+
+        sceneDirector.CreateTreasureChest(transform.position);
     }
 
     // 衝突した時

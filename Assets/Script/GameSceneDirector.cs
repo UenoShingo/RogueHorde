@@ -336,12 +336,21 @@ public class GameSceneDirector : MonoBehaviour
         // 当たり判定のあるタイル上かどうか
         if (Utils.IsColliderTile(tilemapCollider, new Vector2(x, y))) return;
 
-        // 生成
-        GameObject obj = Instantiate(prefabTreasureChest, new Vector3(x, y, 0), Quaternion.identity);
-        obj.GetComponent<TreasureChestController>().Init(this);
+        CreateTreasureChest(new Vector3(x, y, 0));
 
         // 次のタイマーセット
         treasureChestTimer = Random.Range(treasureChestTimerMin, treasureChestTimerMax);
+    }
+
+    // 宝箱生成
+    public TreasureChestController CreateTreasureChest(Vector3 position)
+    {
+        if (null == prefabTreasureChest) return null;
+
+        GameObject obj = Instantiate(prefabTreasureChest, position, Quaternion.identity);
+        TreasureChestController ctrl = obj.GetComponent<TreasureChestController>();
+        ctrl.Init(this);
+        return ctrl;
     }
 
     // プレイヤーアイコンセット

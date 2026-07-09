@@ -402,6 +402,8 @@ public class PlayerController : MonoBehaviour
                 Stats.MaxXP = levelRequirements[Stats.Lv];
             }
 
+            RecoverHPFull();
+
             // レベルアップパネル表示
             sceneDirector.DispPanelLevelUp();
 
@@ -509,6 +511,13 @@ public class PlayerController : MonoBehaviour
         }
 
         // 表示更新
+        setSliderHP();
+    }
+
+    // HP全回復
+    public void RecoverHPFull()
+    {
+        Stats.HP = Stats.MaxHP;
         setSliderHP();
     }
 

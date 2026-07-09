@@ -85,6 +85,8 @@ public class CharacterStats : BaseStats
     public int UsableWeaponMax;
     // 移動タイプ
     public MoveType MoveType;
+    // 撃破時の宝箱ドロップ率
+    public float TreasureChestDropRate;
 
     // アイテム追加
     public void AddItemData(ItemData itemData)
