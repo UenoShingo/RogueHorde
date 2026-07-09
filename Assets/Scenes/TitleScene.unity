@@ -1523,8 +1523,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 15385ff64cd60fc4dbf54ad547a7fd3c, type: 3}
   - {fileID: 8300000, guid: 6c8567eb4554618499733cab5e559ef4, type: 3}
   audioClipsSE:
-  - {fileID: 8300000, guid: 02fa56292a69348d09a13c1c4fea77cd, type: 3}
+  - {fileID: 8300000, guid: 94da957ac7a943b44b60b1a0028c0c26, type: 3}
   - {fileID: 8300000, guid: cbe9f63b43f5e466db2242a8b8f7f6ce, type: 3}
+  audioClipUISelect: {fileID: 8300000, guid: 5b50636d1d0761446803793a65050248, type: 3}
+  uiSelectSEInterval: 0.05
+  audioClipEnemyDamage: {fileID: 8300000, guid: cd449fea4332a6248a021041ba7b8dd5, type: 3}
+  audioClipPlayerDamage: {fileID: 8300000, guid: 94da957ac7a943b44b60b1a0028c0c26, type: 3}
+  enemyDamageSEInterval: 0.08
+  playerDamageSEInterval: 0.08
 --- !u!4 &1923390922
 Transform:
   m_ObjectHideFlags: 0

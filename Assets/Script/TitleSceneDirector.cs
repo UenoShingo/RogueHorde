@@ -13,8 +13,10 @@ public class TitleSceneDirector : MonoBehaviour
     // 左のボタンから順番にIDのキャラクターデータを読み込む
     [SerializeField] List<Button> buttonPlayers;
     [SerializeField] List<int> characterIds;
+    [SerializeField] float gameSceneLoadDelay = 0.15f;
     // 選択したキャラクターID
     public static int CharacterId;
+    bool isLoadingGameScene;
 
     // Start is called before the first frame update
     void Start()
@@ -55,17 +57,13 @@ public class TitleSceneDirector : MonoBehaviour
             // 押された時の処理
             item.onClick.AddListener(() =>
             {
-                // アニメーション停止
-                DOTween.KillAll();
-                // 選択したキャラクターID
-                CharacterId = charId;
-                // ゲームシーンへ
-                SceneManager.LoadScene("GameScene");
+                OnClickPlayer(charId);
             });
         }
 
         // ボタンを選択状態にする
         buttonStart.Select();
+        InputSystemUIBootstrap.SyncCurrentSelection();
 
         // タイトルBGM
         SoundController.Instance.PlayBGM(1);
@@ -83,6 +81,8 @@ public class TitleSceneDirector : MonoBehaviour
     // Startボタン
     public void OnClickStart()
     {
+        if (!canSubmitStart()) return;
+
         // スタートボタンフェードアウト
         Utils.DOfadeUpdate(buttonStart, 0, 1);
         buttonStart.interactable = false;
@@ -99,9 +99,15 @@ public class TitleSceneDirector : MonoBehaviour
         }
 
         // ボタンを選択状態にする
-        buttonPlayers[0].Select();
-
-        SoundController.Instance.PlaySE(0);
+        if (0 < buttonPlayers.Count)
+        {
+            buttonPlayers[0].Select();
+            if (null != SoundController.Instance)
+            {
+                SoundController.Instance.PlayUISelectSE();
+            }
+            InputSystemUIBootstrap.SyncCurrentSelection();
+        }
     }
 
     bool canSubmitStart()
@@ -126,5 +132,42 @@ public class TitleSceneDirector : MonoBehaviour
         return null != gamepad
             && (gamepad.buttonSouth.wasPressedThisFrame
                 || gamepad.startButton.wasPressedThisFrame);
+    }
+
+    void OnClickPlayer(int charId)
+    {
+        if (isLoadingGameScene) return;
+
+        StartCoroutine(loadGameScene(charId));
+    }
+
+    IEnumerator loadGameScene(int charId)
+    {
+        isLoadingGameScene = true;
+
+        // アニメーション停止
+        DOTween.KillAll();
+        // 選択したキャラクターID
+        CharacterId = charId;
+
+        buttonStart.interactable = false;
+        foreach (Button button in buttonPlayers)
+        {
+            button.interactable = false;
+        }
+
+        if (null != SoundController.Instance)
+        {
+            SoundController.Instance.PlayUISelectSE(true);
+        }
+        InputSystemUIBootstrap.SyncCurrentSelection();
+
+        if (0 < gameSceneLoadDelay)
+        {
+            yield return new WaitForSecondsRealtime(gameSceneLoadDelay);
+        }
+
+        // ゲームシーンへ
+        SceneManager.LoadScene("GameScene");
     }
 }

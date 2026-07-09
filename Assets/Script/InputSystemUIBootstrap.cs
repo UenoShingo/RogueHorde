@@ -11,6 +11,8 @@ public class InputSystemUIBootstrap : MonoBehaviour
     static InputSystemUIBootstrap instance;
     EventSystem currentEventSystem;
     bool useManualFallback;
+    GameObject lastSelectedObject;
+    bool skipNextSelectionSE = true;
     Vector2 lastMoveInput;
     float nextMoveTime;
     const float MoveDeadZone = 0.5f;
@@ -25,6 +27,13 @@ public class InputSystemUIBootstrap : MonoBehaviour
         GameObject obj = new GameObject(nameof(InputSystemUIBootstrap));
         instance = obj.AddComponent<InputSystemUIBootstrap>();
         DontDestroyOnLoad(obj);
+    }
+
+    public static void SyncCurrentSelection()
+    {
+        if (null == instance) return;
+
+        instance.syncCurrentSelection();
     }
 
     void OnEnable()
@@ -42,10 +51,13 @@ public class InputSystemUIBootstrap : MonoBehaviour
     {
         setupEventSystem();
         updateManualFallback();
+        updateUISelectSE();
     }
 
     void onSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        lastSelectedObject = null;
+        skipNextSelectionSE = true;
         setupEventSystem();
     }
 
@@ -75,6 +87,15 @@ public class InputSystemUIBootstrap : MonoBehaviour
         inputSystemModule.enabled = true;
         assignDefaultActions(inputSystemModule);
         useManualFallback = null == inputSystemModule.actionsAsset;
+    }
+
+    void syncCurrentSelection()
+    {
+        setupEventSystem();
+        lastSelectedObject = null != currentEventSystem
+            ? currentEventSystem.currentSelectedGameObject
+            : null;
+        skipNextSelectionSE = false;
     }
 
     void assignDefaultActions(InputSystemUIInputModule inputSystemModule)
@@ -226,5 +247,29 @@ public class InputSystemUIBootstrap : MonoBehaviour
         if (0 < input.y) return MoveDirection.Up;
         if (0 > input.y) return MoveDirection.Down;
         return MoveDirection.None;
+    }
+
+    void updateUISelectSE()
+    {
+        if (null == currentEventSystem) return;
+
+        GameObject selected = currentEventSystem.currentSelectedGameObject;
+        if (selected == lastSelectedObject) return;
+
+        lastSelectedObject = selected;
+        if (null == selected) return;
+        if (!selected.TryGetComponent<Selectable>(out var selectable)) return;
+        if (!selectable.IsActive() || !selectable.IsInteractable()) return;
+
+        if (skipNextSelectionSE)
+        {
+            skipNextSelectionSE = false;
+            return;
+        }
+
+        if (null != SoundController.Instance)
+        {
+            SoundController.Instance.PlayUISelectSE();
+        }
     }
 }

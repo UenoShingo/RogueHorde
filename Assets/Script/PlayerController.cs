@@ -268,6 +268,12 @@ public class PlayerController : MonoBehaviour
         // ダメージ表示
         sceneDirector.DispDamage(gameObject, damage);
 
+        // ダメージSE
+        if (0 < damage && null != SoundController.Instance)
+        {
+            SoundController.Instance.PlayPlayerDamageSE();
+        }
+
         // ゲームオーバー
         if (0 > Stats.HP)
         {

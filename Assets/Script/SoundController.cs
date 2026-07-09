@@ -6,6 +6,11 @@ public class SoundController : MonoBehaviour
 {
     // シングルトン
     public static SoundController Instance;
+    // SEの最後の再生時間
+    Dictionary<int, float> lastSeTimes = new Dictionary<int, float>();
+    float lastUISelectSETime = -999f;
+    float lastEnemyDamageSETime = -999f;
+    float lastPlayerDamageSETime = -999f;
 
     void Awake()
     {
@@ -33,10 +38,23 @@ public class SoundController : MonoBehaviour
     [SerializeField] List<AudioClip> audioClipsBGM;
     // SE音源
     [SerializeField] List<AudioClip> audioClipsSE;
+    // UI選択専用SE音源
+    [SerializeField] AudioClip audioClipUISelect;
+    [SerializeField] float uiSelectSEInterval = 0.05f;
+    // ダメージ専用SE音源
+    [SerializeField] AudioClip audioClipEnemyDamage;
+    [SerializeField] AudioClip audioClipPlayerDamage;
+    [SerializeField] float enemyDamageSEInterval = 0.08f;
+    [SerializeField] float playerDamageSEInterval = 0.08f;
 
     // BGM再生
     public void PlayBGM(int index)
     {
+        if (null == audioSource) return;
+        if (null == audioClipsBGM) return;
+        if (0 > index || audioClipsBGM.Count <= index) return;
+        if (null == audioClipsBGM[index]) return;
+
         audioSource.clip = audioClipsBGM[index];
         audioSource.Play();
     }
@@ -44,6 +62,81 @@ public class SoundController : MonoBehaviour
     // SE再生
     public void PlaySE(int index)
     {
+        if (null == audioSource) return;
+        if (null == audioClipsSE) return;
+        if (0 > index || audioClipsSE.Count <= index) return;
+        if (null == audioClipsSE[index]) return;
+
         audioSource.PlayOneShot(audioClipsSE[index]);
+    }
+
+    // SE再生（連続再生制限付き）
+    public void PlaySE(int index, float interval)
+    {
+        if (0 < interval)
+        {
+            if (lastSeTimes.TryGetValue(index, out float lastTime)
+                && Time.unscaledTime - lastTime < interval)
+            {
+                return;
+            }
+
+            lastSeTimes[index] = Time.unscaledTime;
+        }
+
+        PlaySE(index);
+    }
+
+    // UI選択SE再生
+    public void PlayUISelectSE()
+    {
+        PlayUISelectSE(false);
+    }
+
+    public void PlayUISelectSE(bool force)
+    {
+        if (null == audioSource) return;
+        if (!force
+            && 0 < uiSelectSEInterval
+            && Time.unscaledTime - lastUISelectSETime < uiSelectSEInterval)
+        {
+            return;
+        }
+
+        lastUISelectSETime = Time.unscaledTime;
+
+        if (null != audioClipUISelect)
+        {
+            audioSource.PlayOneShot(audioClipUISelect);
+        }
+    }
+
+    // 敵ダメージSE再生
+    public void PlayEnemyDamageSE()
+    {
+        PlayDamageSE(audioClipEnemyDamage, ref lastEnemyDamageSETime, enemyDamageSEInterval);
+    }
+
+    // プレイヤーダメージSE再生
+    public void PlayPlayerDamageSE()
+    {
+        PlayDamageSE(audioClipPlayerDamage, ref lastPlayerDamageSETime, playerDamageSEInterval);
+    }
+
+    // ダメージSE再生
+    void PlayDamageSE(AudioClip clip, ref float lastTime, float interval)
+    {
+        if (null == audioSource) return;
+        if (0 < interval && Time.unscaledTime - lastTime < interval) return;
+
+        lastTime = Time.unscaledTime;
+
+        if (null != clip)
+        {
+            audioSource.PlayOneShot(clip);
+            return;
+        }
+
+        PlaySE(1);
     }
 }

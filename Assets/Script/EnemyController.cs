@@ -178,6 +178,12 @@ public class EnemyController : MonoBehaviour
         // ダメージ表示
         sceneDirector.DispDamage(gameObject, damage);
 
+        // ダメージSE
+        if (0 < damage && null != SoundController.Instance)
+        {
+            SoundController.Instance.PlayEnemyDamageSE();
+        }
+
         // 消滅
         if (0 > Stats.HP)
         {
