@@ -65,6 +65,9 @@ public class GameSceneDirector : MonoBehaviour
     // ゲームオーバー
     [SerializeField] PanelGameOverController panelGameOver;
 
+    // プレイヤーダメージ演出
+    [SerializeField] PlayerDamagePostProcessController playerDamagePostProcess;
+
     // 終了時間
     [SerializeField] float GameOverTime;
 
@@ -125,6 +128,9 @@ public class GameSceneDirector : MonoBehaviour
         // アイコン更新
         dispPlayerIcon();
 
+        // プレイヤーダメージ演出
+        setupPlayerDamagePostProcess();
+
         // 倒した敵更新
         AddDefeatedEnemy();
 
@@ -155,6 +161,36 @@ public class GameSceneDirector : MonoBehaviour
     {
         GameObject obj = Instantiate(prefabTextDamage, parentTextDamage);
         obj.GetComponent<TextDamageController>().Init(target, damage);
+    }
+
+    // プレイヤーダメージ演出を表示
+    public void DispPlayerDamageEffect()
+    {
+        if (null == playerDamagePostProcess)
+        {
+            setupPlayerDamagePostProcess();
+        }
+
+        if (null != playerDamagePostProcess)
+        {
+            playerDamagePostProcess.Flash();
+        }
+    }
+
+    void setupPlayerDamagePostProcess()
+    {
+        Camera mainCamera = Camera.main;
+        if (null == mainCamera) return;
+
+        if (null == playerDamagePostProcess)
+        {
+            playerDamagePostProcess = mainCamera.GetComponent<PlayerDamagePostProcessController>();
+        }
+
+        if (null == playerDamagePostProcess)
+        {
+            playerDamagePostProcess = mainCamera.gameObject.AddComponent<PlayerDamagePostProcessController>();
+        }
     }
 
     // ゲームタイマー

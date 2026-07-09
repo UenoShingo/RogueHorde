@@ -268,10 +268,16 @@ public class PlayerController : MonoBehaviour
         // ダメージ表示
         sceneDirector.DispDamage(gameObject, damage);
 
-        // ダメージSE
-        if (0 < damage && null != SoundController.Instance)
+        if (0 < damage)
         {
-            SoundController.Instance.PlayPlayerDamageSE();
+            // ダメージSE
+            if (null != SoundController.Instance)
+            {
+                SoundController.Instance.PlayPlayerDamageSE();
+            }
+
+            // ダメージ演出
+            sceneDirector.DispPlayerDamageEffect();
         }
 
         // ゲームオーバー
