@@ -6,12 +6,20 @@ public class SoundController : MonoBehaviour
 {
     // シングルトン
     public static SoundController Instance;
+    // BGM再生装置
+    AudioSource bgmAudioSource;
+    // SE再生装置
+    AudioSource seAudioSource;
+    // ダメージSE再生装置
+    AudioSource damageAudioSource;
+    // リザルトBGM再生後にタイトルBGMへ戻す処理
+    Coroutine bgmCoroutine;
+
     // SEの最後の再生時間
     Dictionary<int, float> lastSeTimes = new Dictionary<int, float>();
     float lastUISelectSETime = -999f;
     float lastEnemyDamageSETime = -999f;
     float lastPlayerDamageSETime = -999f;
-    Coroutine bgmCoroutine;
 
     void Awake()
     {
@@ -19,8 +27,7 @@ public class SoundController : MonoBehaviour
         if (null == Instance)
         {
             // サウンドの設定
-            audioSource = GetComponent<AudioSource>();
-            audioSource.loop = true;
+            setupAudioSources();
             // 最初に作られたオブジェクトをセットする
             Instance = this;
             // シーンをまたいでもオブジェクトを削除しない
@@ -33,8 +40,6 @@ public class SoundController : MonoBehaviour
         }
     }
 
-    // 再生装置
-    AudioSource audioSource;
     // BGM音源
     [SerializeField] List<AudioClip> audioClipsBGM;
     [SerializeField] AudioClip audioClipGameOverBGM;
@@ -42,6 +47,8 @@ public class SoundController : MonoBehaviour
     [SerializeField] int gameOverBGMIndex = 2;
     [SerializeField] int gameClearBGMIndex = 3;
     [SerializeField] int titleBGMIndex = 1;
+    [SerializeField, Range(0f, 1f)] float bgmVolume = 0.45f;
+    [SerializeField, Range(0f, 1f)] float seVolume = 1f;
     // SE音源
     [SerializeField] List<AudioClip> audioClipsSE;
     // UI選択専用SE音源
@@ -56,19 +63,23 @@ public class SoundController : MonoBehaviour
     // BGM再生
     public void PlayBGM(int index)
     {
-        PlayBGM(getBGMClip(index));
+        AudioClip clip = getBGMClip(index);
+        if (null == clip) return;
+
+        PlayBGM(clip);
     }
 
     // BGM再生
     public void PlayBGM(AudioClip clip)
     {
-        if (null == audioSource) return;
+        if (null == bgmAudioSource) return;
         if (null == clip) return;
 
         stopBGMCoroutine();
-        audioSource.loop = true;
-        audioSource.clip = clip;
-        audioSource.Play();
+        bgmAudioSource.loop = true;
+        bgmAudioSource.volume = bgmVolume;
+        bgmAudioSource.clip = clip;
+        bgmAudioSource.Play();
     }
 
     // ゲームオーバーBGM再生
@@ -85,61 +96,29 @@ public class SoundController : MonoBehaviour
 
     void playResultBGM(AudioClip clip, int fallbackIndex)
     {
-        if (null == audioSource) return;
-
         AudioClip resultClip = clip;
         if (null == resultClip)
         {
             resultClip = getBGMClip(fallbackIndex);
         }
 
-        if (null == resultClip)
-        {
-            PlayBGM(titleBGMIndex);
-            return;
-        }
+        if (null == bgmAudioSource) return;
+        if (null == resultClip) return;
 
         stopBGMCoroutine();
         bgmCoroutine = StartCoroutine(playResultBGMThenTitle(resultClip));
     }
 
-    IEnumerator playResultBGMThenTitle(AudioClip resultClip)
-    {
-        audioSource.loop = false;
-        audioSource.clip = resultClip;
-        audioSource.Play();
-
-        yield return new WaitForSecondsRealtime(resultClip.length);
-
-        bgmCoroutine = null;
-        PlayBGM(titleBGMIndex);
-    }
-
-    AudioClip getBGMClip(int index)
-    {
-        if (null == audioClipsBGM) return null;
-        if (0 > index || audioClipsBGM.Count <= index) return null;
-
-        return audioClipsBGM[index];
-    }
-
-    void stopBGMCoroutine()
-    {
-        if (null == bgmCoroutine) return;
-
-        StopCoroutine(bgmCoroutine);
-        bgmCoroutine = null;
-    }
-
     // SE再生
     public void PlaySE(int index)
     {
-        if (null == audioSource) return;
+        if (null == seAudioSource) return;
         if (null == audioClipsSE) return;
         if (0 > index || audioClipsSE.Count <= index) return;
         if (null == audioClipsSE[index]) return;
 
-        audioSource.PlayOneShot(audioClipsSE[index]);
+        seAudioSource.volume = seVolume;
+        seAudioSource.PlayOneShot(audioClipsSE[index]);
     }
 
     // SE再生（連続再生制限付き）
@@ -167,7 +146,7 @@ public class SoundController : MonoBehaviour
 
     public void PlayUISelectSE(bool force)
     {
-        if (null == audioSource) return;
+        if (null == seAudioSource) return;
         if (!force
             && 0 < uiSelectSEInterval
             && Time.unscaledTime - lastUISelectSETime < uiSelectSEInterval)
@@ -179,7 +158,8 @@ public class SoundController : MonoBehaviour
 
         if (null != audioClipUISelect)
         {
-            audioSource.PlayOneShot(audioClipUISelect);
+            seAudioSource.volume = seVolume;
+            seAudioSource.PlayOneShot(audioClipUISelect);
         }
     }
 
@@ -192,23 +172,124 @@ public class SoundController : MonoBehaviour
     // プレイヤーダメージSE再生
     public void PlayPlayerDamageSE()
     {
-        PlayDamageSE(audioClipPlayerDamage, ref lastPlayerDamageSETime, playerDamageSEInterval);
+        PlayDamageSE(audioClipPlayerDamage, ref lastPlayerDamageSETime, playerDamageSEInterval, true, true);
     }
 
     // ダメージSE再生
-    void PlayDamageSE(AudioClip clip, ref float lastTime, float interval)
+    void PlayDamageSE(AudioClip clip, ref float lastTime, float interval, bool preventOverlap = false, bool interruptPlayingDamage = false)
     {
-        if (null == audioSource) return;
-        if (0 < interval && Time.unscaledTime - lastTime < interval) return;
+        if (null == damageAudioSource) return;
 
-        lastTime = Time.unscaledTime;
-
-        if (null != clip)
+        if (null == clip)
         {
-            audioSource.PlayOneShot(clip);
-            return;
+            clip = getSEClip(1);
         }
 
-        PlaySE(1);
+        if (null == clip) return;
+
+        float effectiveInterval = interval;
+        if (preventOverlap)
+        {
+            effectiveInterval = Mathf.Max(effectiveInterval, clip.length);
+        }
+
+        if (0 < effectiveInterval && Time.unscaledTime - lastTime < effectiveInterval) return;
+
+        if (damageAudioSource.isPlaying)
+        {
+            if (!interruptPlayingDamage) return;
+
+            damageAudioSource.Stop();
+        }
+
+        lastTime = Time.unscaledTime;
+        damageAudioSource.volume = seVolume;
+        damageAudioSource.clip = clip;
+        damageAudioSource.Play();
+    }
+
+    void setupAudioSources()
+    {
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+
+        if (0 < audioSources.Length)
+        {
+            bgmAudioSource = audioSources[0];
+        }
+        else
+        {
+            bgmAudioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        if (1 < audioSources.Length)
+        {
+            seAudioSource = audioSources[1];
+        }
+        else
+        {
+            seAudioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        if (2 < audioSources.Length)
+        {
+            damageAudioSource = audioSources[2];
+        }
+        else
+        {
+            damageAudioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        bgmAudioSource.playOnAwake = false;
+        bgmAudioSource.loop = true;
+        bgmAudioSource.volume = bgmVolume;
+
+        seAudioSource.playOnAwake = false;
+        seAudioSource.loop = false;
+        seAudioSource.volume = seVolume;
+        seAudioSource.spatialBlend = 0f;
+        seAudioSource.outputAudioMixerGroup = bgmAudioSource.outputAudioMixerGroup;
+
+        damageAudioSource.playOnAwake = false;
+        damageAudioSource.loop = false;
+        damageAudioSource.volume = seVolume;
+        damageAudioSource.spatialBlend = 0f;
+        damageAudioSource.outputAudioMixerGroup = bgmAudioSource.outputAudioMixerGroup;
+    }
+
+    IEnumerator playResultBGMThenTitle(AudioClip resultClip)
+    {
+        bgmAudioSource.loop = false;
+        bgmAudioSource.volume = bgmVolume;
+        bgmAudioSource.clip = resultClip;
+        bgmAudioSource.Play();
+
+        yield return new WaitForSecondsRealtime(resultClip.length);
+
+        bgmCoroutine = null;
+        PlayBGM(titleBGMIndex);
+    }
+
+    AudioClip getBGMClip(int index)
+    {
+        if (null == audioClipsBGM) return null;
+        if (0 > index || audioClipsBGM.Count <= index) return null;
+
+        return audioClipsBGM[index];
+    }
+
+    AudioClip getSEClip(int index)
+    {
+        if (null == audioClipsSE) return null;
+        if (0 > index || audioClipsSE.Count <= index) return null;
+
+        return audioClipsSE[index];
+    }
+
+    void stopBGMCoroutine()
+    {
+        if (null == bgmCoroutine) return;
+
+        StopCoroutine(bgmCoroutine);
+        bgmCoroutine = null;
     }
 }
